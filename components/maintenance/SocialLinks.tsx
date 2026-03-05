@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { SocialLink } from "./socialLinkData";
+import { withBasePath } from "@/lib/withBasePath";
 
 type SocialLinksProps = {
   links: SocialLink[];
@@ -27,7 +28,7 @@ export function SocialLinks({ links }: SocialLinksProps) {
               <span className="social-bubble" aria-hidden>
                 <Image
                   className={`social-icon social-icon--${link.id}`}
-                  src={link.iconPath}
+                  src={withBasePath(link.iconPath)}
                   alt=""
                   width={52}
                   height={52}

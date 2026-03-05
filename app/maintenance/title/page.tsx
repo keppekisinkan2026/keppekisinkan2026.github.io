@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { socialLinks } from "@/components/maintenance/socialLinkData";
 import { CrayonPanelTexture } from "@/components/wireframe/CrayonPanelTexture";
 import { WireframeShell } from "@/components/wireframe/WireframeShell";
+import { withBasePath } from "@/lib/withBasePath";
 
 const titleNavigationLinks = [
   { label: "劇団紹介", href: "#about" },
@@ -143,7 +144,7 @@ export default function TitleWireframePage() {
         <MarkerDrawOverlay />
         <div className="wf-title-logo-wrap">
           <Image
-            src="/images/logo.PNG"
+            src={withBasePath("/images/logo.PNG")}
             alt="劇団ケッペキ 2026年度新歓特設サイト ロゴ"
             width={3163}
             height={936}
@@ -186,7 +187,7 @@ export default function TitleWireframePage() {
               >
                 <span className="wf-title-sns-bubble">
                   <Image
-                    src={item.iconPath}
+                    src={withBasePath(item.iconPath)}
                     alt=""
                     width={40}
                     height={40}
