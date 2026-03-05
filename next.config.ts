@@ -6,7 +6,6 @@ const repositoryNameFromSlug = repositorySlug.split("/")[1];
 const repositoryName = repositoryNameFromSlug || "keppeki_sinkan2026";
 const isOrgSiteRepository = repositoryName.endsWith(".github.io");
 const githubPagesBasePath = isOrgSiteRepository ? "" : `/${repositoryName}`;
-const githubPagesAssetPrefix = githubPagesBasePath ? `${githubPagesBasePath}/` : "";
 
 const nextConfig: NextConfig = {
   output: "export",
@@ -15,7 +14,6 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   basePath: isGithubActions ? githubPagesBasePath : "",
-  assetPrefix: isGithubActions ? githubPagesAssetPrefix : "",
   env: {
     NEXT_PUBLIC_BASE_PATH: isGithubActions ? githubPagesBasePath : "",
   },

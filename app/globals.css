@@ -795,6 +795,58 @@ body {
   mix-blend-mode: multiply;
 }
 
+.wf-draw-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wf-draw-stroke {
+  position: absolute;
+  left: -22%;
+  width: 144%;
+  height: 28%;
+  opacity: 0;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(189, 225, 131, 0.8), rgba(217, 242, 174, 0.95), rgba(168, 208, 107, 0.78)),
+    repeating-linear-gradient(
+      7deg,
+      rgba(236, 248, 214, 0.42) 0 10px,
+      rgba(143, 184, 84, 0.26) 10px 18px
+    );
+  box-shadow:
+    0 0 0 1px rgba(199, 231, 149, 0.42),
+    0 6px 14px rgba(93, 124, 56, 0.22);
+}
+
+.wf-draw-stroke::before {
+  content: "";
+  position: absolute;
+  inset: 12% 4%;
+  border-radius: 999px;
+  opacity: 0.62;
+  background: linear-gradient(90deg, rgba(245, 252, 228, 0.5), rgba(230, 248, 198, 0));
+}
+
+.wf-draw-stroke--1 {
+  top: -4%;
+}
+
+.wf-draw-stroke--2 {
+  top: 22%;
+}
+
+.wf-draw-stroke--3 {
+  top: 48%;
+}
+
+.wf-draw-stroke--4 {
+  top: 74%;
+}
+
 .wf-title-header {
   display: flex;
   flex-direction: column;
@@ -878,6 +930,7 @@ body {
 .js-draw-header,
 .js-draw-section {
   will-change: transform, opacity, clip-path;
+  overflow: hidden;
 }
 
 .wf-title-nav-link:hover {
