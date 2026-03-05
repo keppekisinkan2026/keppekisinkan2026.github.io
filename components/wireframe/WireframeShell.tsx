@@ -3,14 +3,26 @@ import { WireframeTextureLayer } from "./WireframeTextureLayer";
 
 type WireframeShellProps = {
   children: ReactNode;
+  screenClassName?: string;
+  frameClassName?: string;
+  innerClassName?: string;
 };
 
-export function WireframeShell({ children }: WireframeShellProps) {
+function joinClassNames(...classNames: Array<string | undefined>) {
+  return classNames.filter(Boolean).join(" ");
+}
+
+export function WireframeShell({
+  children,
+  screenClassName,
+  frameClassName,
+  innerClassName,
+}: WireframeShellProps) {
   return (
-    <main className="wf-screen">
+    <main className={joinClassNames("wf-screen", screenClassName)}>
       <WireframeTextureLayer />
-      <div className="wf-frame">
-        <div className="wf-frame-inner">{children}</div>
+      <div className={joinClassNames("wf-frame", frameClassName)}>
+        <div className={joinClassNames("wf-frame-inner", innerClassName)}>{children}</div>
       </div>
     </main>
   );
