@@ -116,9 +116,8 @@ export default function EventsWireframePage() {
   return (
     <WireframeShell frameClassName="wf-frame--events" innerClassName="wf-frame-inner--events">
       {/*
-       * wf-event-page-container が両セクションの横幅の基準となる共通の親。
-       * CSS で max-width / width を定義し、両セクションに width: 100% を当てることで
-       * block_large.PNG（wf-event-board-section）の横幅がスケジュールと揃う。
+       * wf-event-page-container がページ全体の横幅の器。
+       * スケジュール表は中央の固定幅、イベントボードは画面幅いっぱいに伸びる。
        */}
       <div ref={rootRef} className="wf-event-page-container">
         {/* ── スケジュール ───────────────────────────────── */}
@@ -130,8 +129,7 @@ export default function EventsWireframePage() {
         {/*
          * position: relative を持つ wf-event-board-section が
          * fill 画像（block_large.PNG）の基準矩形になる。
-         * 横幅は親（wf-event-page-container）から width: 100% で継承するため、
-         * スケジュールセクションと自動的に揃う。
+         * 背景画像は CSS 側で画面幅いっぱいまで引き伸ばす。
          */}
         <section className="wf-event-board-section">
           <Image
@@ -140,7 +138,7 @@ export default function EventsWireframePage() {
             fill
             quality={100}
             unoptimized
-            sizes="(max-width: 980px) 90vw, 980px"
+            sizes="100vw"
             className="wf-event-board-bg"
             aria-hidden
           />

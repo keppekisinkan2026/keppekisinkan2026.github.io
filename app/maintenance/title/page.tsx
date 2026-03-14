@@ -37,9 +37,10 @@ const aboutImgFuneFrameSources = [...aboutCommonAnimFrameSources, "/images/fune.
 const aboutImgPichiFrameSources = [...aboutCommonAnimFrameSources, "/images/pichi.PNG"] as const;
 
 const titleNavigationLinks = [
-  { label: "ホーム", href: "/maintenance/title" },
+  { label: "ホーム", href: "/title" },
   { label: "劇団紹介", href: "#about" },
   { label: "部署紹介", href: "/maintenance/departments" },
+  { label: "企画の流れ", href: "/maintenance/flow" },
   { label: "新歓イベント", href: "/maintenance/events" },
   { label: "過去公演", href: "/maintenance/past" },
   { label: "Q&A", href: "/maintenance/qa" },
@@ -247,6 +248,18 @@ export default function TitleWireframePage() {
       body.style.overflow = previousBodyOverflow;
     };
   }, [isIntroComplete]);
+
+  useEffect(() => {
+    const refreshScrollTriggers = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener("load", refreshScrollTriggers);
+
+    return () => {
+      window.removeEventListener("load", refreshScrollTriggers);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -463,6 +476,7 @@ export default function TitleWireframePage() {
           scrollTrigger: {
             trigger: snsSection,
             start: "top 75%",
+            invalidateOnRefresh: true,
             toggleActions: "play none none none",
           },
         });
@@ -500,11 +514,12 @@ export default function TitleWireframePage() {
         ScrollTrigger.create({
           trigger: hpButton,
           start: "center center",
-          endTrigger: aboutPanel,
+          endTrigger: aboutStage ?? aboutPanel,
           end: "top top",
           pin: true,
           pinSpacing: false,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         });
       }
 
@@ -523,34 +538,13 @@ export default function TitleWireframePage() {
             scrollTrigger: {
               trigger: block,
               start: "top 86%",
+              invalidateOnRefresh: true,
               toggleActions: "play none none none",
               once: true,
             },
           },
         );
       });
-
-      if (aboutStage && aboutPanel) {
-        gsap.fromTo(
-          aboutPanel,
-          {
-            y: 220,
-            autoAlpha: 1,
-          },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 1.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: aboutStage,
-              start: "top bottom",
-              toggleActions: "play none none none",
-              once: true,
-            },
-          },
-        );
-      }
 
       if (aboutStage && aboutPanel) {
         const aboutTitle = aboutPanel.querySelector<HTMLElement>(".js-about-title");
@@ -617,13 +611,15 @@ export default function TitleWireframePage() {
 
         const aboutTimeline = gsap.timeline({
           scrollTrigger: {
-            trigger: aboutPanel,
-            start: "center center",
-            end: "+=1000%",
+            trigger: aboutStage,
+            start: "top top",
+            end: () => `+=${Math.max(window.innerHeight * 9, 4800)}`,
             scrub: 1,
             pin: true,
             pinSpacing: true,
             anticipatePin: 1,
+            fastScrollEnd: true,
+            invalidateOnRefresh: true,
           },
         });
 
