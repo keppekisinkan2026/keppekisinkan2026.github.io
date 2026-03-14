@@ -32,6 +32,8 @@ const aboutCommonAnimFrameSources = [
 ] as const;
 const aboutImg2FrameSources = [...aboutCommonAnimFrameSources, "/images/i2.PNG"] as const;
 const aboutImg3FrameSources = [...aboutCommonAnimFrameSources, "/images/i3.PNG"] as const;
+const aboutImg4FrameSources = [...aboutCommonAnimFrameSources, "/images/i4.PNG"] as const;
+const aboutImg5FrameSources = [...aboutCommonAnimFrameSources, "/images/i5.PNG"] as const;
 const aboutImgSinzinFrameSources = [...aboutCommonAnimFrameSources, "/images/sinzin.PNG"] as const;
 const aboutImgFuneFrameSources = [...aboutCommonAnimFrameSources, "/images/fune.PNG"] as const;
 const aboutImgPichiFrameSources = [...aboutCommonAnimFrameSources, "/images/pichi.PNG"] as const;
@@ -57,7 +59,7 @@ const aboutChunkStyle = { display: "inline-block" } as const;
 
 const aboutCampusText = (
   <div className="js-about-text-container wf-about-text-container">
-    <h3 className="wf-about-subheading">さまざまな大学の学生が集まるインカレサークル</h3>
+    <h3 className="wf-about-subheading">さまざまな大学の学生が集まる<wbr />インカレサークル</h3>
     <p className="js-about-text wf-about-text">
       <span style={aboutChunkStyle}>団員は現在80名ほど(2026年現在)。</span>
       <wbr />
@@ -313,15 +315,15 @@ export default function TitleWireframePage() {
       const linePaths = Array.from(lineSvg.querySelectorAll<SVGPathElement>("path"));
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      linePaths.forEach((path, index) => {
+      linePaths.forEach((path) => {
         path.setAttribute("fill", "none");
-        path.setAttribute("stroke-linecap", "round");
+        // path.setAttribute("stroke-linecap", "round");
         path.setAttribute("stroke-linejoin", "round");
-        path.setAttribute("opacity", index % 2 === 0 ? "0.96" : "0.82");
         const totalLength = path.getTotalLength();
         gsap.set(path, {
           strokeDasharray: totalLength,
           strokeDashoffset: totalLength,
+          opacity: 0
         });
       });
 
@@ -384,12 +386,21 @@ export default function TitleWireframePage() {
       introTimeline.to(
         linePaths,
         {
+          opacity: (index) => (index % 2 === 0 ? 0.96 : 0.82),
+          duration: 0.01,
+          stagger: 0.04,
+        },
+        "-=0.08"
+      )
+      .to(
+        linePaths,
+        {
           strokeDashoffset: 0,
           duration: 0.72,
           stagger: 0.04,
           ease: "power1.out",
         },
-        "-=0.08",
+        "<"
       );
 
       introTimeline.to(
@@ -453,6 +464,8 @@ export default function TitleWireframePage() {
           showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img1-frame", aboutPanel));
           showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img2-frame", aboutPanel));
           showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img3-frame", aboutPanel));
+          showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img4-frame", aboutPanel));
+          showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img5-frame", aboutPanel));
           showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img-sinzin-frame", aboutPanel));
           showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img-fune-frame", aboutPanel));
           showLastFlipbookFrame(gsap.utils.toArray<HTMLElement>(".js-about-img-pichi-frame", aboutPanel));
@@ -552,11 +565,14 @@ export default function TitleWireframePage() {
         const aboutImg1Frames = gsap.utils.toArray<HTMLElement>(".js-about-img1-frame", aboutPanel);
         const aboutImg2Frames = gsap.utils.toArray<HTMLElement>(".js-about-img2-frame", aboutPanel);
         const aboutImg3Frames = gsap.utils.toArray<HTMLElement>(".js-about-img3-frame", aboutPanel);
+        const aboutImg4Frames = gsap.utils.toArray<HTMLElement>(".js-about-img4-frame", aboutPanel);
+        const aboutImg5Frames = gsap.utils.toArray<HTMLElement>(".js-about-img5-frame", aboutPanel);
         const aboutImgSinzinFrames = gsap.utils.toArray<HTMLElement>(".js-about-img-sinzin-frame", aboutPanel);
         const aboutImgFuneFrames = gsap.utils.toArray<HTMLElement>(".js-about-img-fune-frame", aboutPanel);
         const aboutImgPichiFrames = gsap.utils.toArray<HTMLElement>(".js-about-img-pichi-frame", aboutPanel);
         let hasPlayedAboutImg1 = false;
         let hasPlayedAboutImg2And3 = false;
+        let hasPlayedAboutImg4And5 = false;
         let hasPlayedAboutProduceFrames = false;
 
         const playAboutImg1Frames = () => {
@@ -582,6 +598,18 @@ export default function TitleWireframePage() {
           appendFlipbookFrames(aboutImg2And3Timeline, aboutImg3Frames, { startAt: 0.7, staggerDelay: 0.2 });
         };
 
+        const playAboutImg4And5Frames = () => {
+          if (hasPlayedAboutImg4And5 || (aboutImg4Frames.length === 0 && aboutImg5Frames.length === 0)) {
+            return;
+          }
+
+          hasPlayedAboutImg4And5 = true;
+
+          const aboutImg4And5Timeline = gsap.timeline({ defaults: { ease: "none" } });
+          appendFlipbookFrames(aboutImg4And5Timeline, aboutImg4Frames, { startAt: 0, staggerDelay: 0.2 });
+          appendFlipbookFrames(aboutImg4And5Timeline, aboutImg5Frames, { startAt: 0.7, staggerDelay: 0.2 });
+        };
+
         const playAboutProduceFrames = () => {
           if (
             hasPlayedAboutProduceFrames ||
@@ -605,6 +633,8 @@ export default function TitleWireframePage() {
         hideFlipbookFrames(aboutImg1Frames);
         hideFlipbookFrames(aboutImg2Frames);
         hideFlipbookFrames(aboutImg3Frames);
+        hideFlipbookFrames(aboutImg4Frames);
+        hideFlipbookFrames(aboutImg5Frames);
         hideFlipbookFrames(aboutImgSinzinFrames);
         hideFlipbookFrames(aboutImgFuneFrames);
         hideFlipbookFrames(aboutImgPichiFrames);
@@ -651,6 +681,8 @@ export default function TitleWireframePage() {
                     ? playAboutImg2And3Frames
                     : index === 2
                       ? playAboutProduceFrames
+                      : index === 3
+                        ? playAboutImg4And5Frames
                       : undefined,
             },
             "+=0.55",
@@ -848,7 +880,7 @@ export default function TitleWireframePage() {
                   >
                     {rowIndex === 1 ? (
                       <>
-                        <div className="js-about-images-left wf-about-images-left" aria-hidden>
+                        <div className="js-about-images-left wf-about-images-left wf-about-images-left--year-round" aria-hidden>
                           <div className="wf-about-anim-container">
                             {aboutImg2FrameSources.map((frameSrc) => (
                               <Image
@@ -930,23 +962,54 @@ export default function TitleWireframePage() {
                           </div>
                         </div>
                       </>
+                    ) : rowIndex === 3 ? (
+                      <>
+                        <div className="js-about-images-left wf-about-images-left" aria-hidden>
+                          <div className="wf-about-anim-container">
+                            {aboutImg4FrameSources.map((frameSrc) => (
+                              <Image
+                                key={frameSrc}
+                                src={withBasePath(frameSrc)}
+                                alt=""
+                                fill
+                                quality={100}
+                                unoptimized
+                                sizes="(max-width: 640px) 40vw, (max-width: 1024px) 28vw, 300px"
+                                className="js-about-img4-frame"
+                              />
+                            ))}
+                          </div>
+                          <div className="wf-about-anim-container">
+                            {aboutImg5FrameSources.map((frameSrc) => (
+                              <Image
+                                key={frameSrc}
+                                src={withBasePath(frameSrc)}
+                                alt=""
+                                fill
+                                quality={100}
+                                unoptimized
+                                sizes="(max-width: 640px) 40vw, (max-width: 1024px) 28vw, 300px"
+                                className="js-about-img5-frame"
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="js-about-copy wf-title-about-copy">{aboutYearRoundText}</div>
+                      </>
                     ) : (
                       <>
                         <div className="js-about-copy wf-title-about-copy">
-                          {rowIndex === 3 ? (
-                            aboutYearRoundText
-                          ) : (
-                            <>
-                              {rowIndex === 0 ? (
-                                <p className="wf-about-kicker wf-maki-title">京都大学公認演劇サークル</p>
-                              ) : null}
-                              {aboutRowParagraphs[rowIndex].map((paragraph, index) => (
-                                <p key={`${row.key}-${index}`} className="js-about-text wf-about-text">
-                                  {paragraph}
-                                </p>
-                              ))}
-                            </>
-                          )}
+                          <>
+                            {rowIndex === 0 ? (
+                              <p className="wf-about-kicker wf-maki-title">京都大学公認演劇サークル</p>
+                            ) : null}
+                            {aboutRowParagraphs[rowIndex].map((paragraph, index) => (
+                              <p key={`${row.key}-${index}`} className="js-about-text wf-about-text">
+                                {paragraph}
+                              </p>
+                            ))}
+                          </>
                         </div>
 
                         {rowIndex === 0 ? (
