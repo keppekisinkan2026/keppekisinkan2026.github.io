@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { WireframeShell } from "@/components/wireframe/WireframeShell";
-import { appendFlipbookFrames, hideFlipbookFrames } from "@/lib/gsap/flipbook";
+import { appendFlipbookFrames, hideFlipbookFrames, showLastFlipbookFrame } from "@/lib/gsap/flipbook";
 import { withBasePath } from "@/lib/withBasePath";
 
 // ---------------------------------------------------------------------------
@@ -39,10 +39,6 @@ const hakusiFrames = [
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-// ---------------------------------------------------------------------------
-// サブコンポーネント
-// ---------------------------------------------------------------------------
-
 function EventCardItem({ event }: { event: EventCard }) {
   return (
     <article className="js-event-item wf-event-item">
@@ -53,7 +49,6 @@ function EventCardItem({ event }: { event: EventCard }) {
             src={withBasePath(frameSrc)}
             alt=""
             fill
-            quality={100}
             unoptimized
             sizes={EVENT_FRAME_IMAGE_SIZES}
             className="js-hakusi-frame wf-event-hakusi-img"
@@ -61,7 +56,7 @@ function EventCardItem({ event }: { event: EventCard }) {
         ))}
       </div>
 
-      <div className="wf-event-item-content">
+      <div className="js-event-content wf-event-item-content">
         <h3 className="wf-event-item-title wf-maki-title">{event.title}</h3>
         <p className="wf-event-item-text">
           {event.lines.map((line, index) => (
@@ -74,10 +69,6 @@ function EventCardItem({ event }: { event: EventCard }) {
     </article>
   );
 }
-
-// ---------------------------------------------------------------------------
-// ページ本体
-// ---------------------------------------------------------------------------
 
 export default function EventsWireframePage() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -94,10 +85,20 @@ export default function EventsWireframePage() {
           ".js-hakusi-frame",
           item,
         );
+        const content = item.querySelector<HTMLElement>(".js-event-content");
 
-        if (frames.length === 0) return;
+        if (frames.length === 0 || !content) return;
 
         hideFlipbookFrames(frames);
+        gsap.set(content, { autoAlpha: 0, y: 14 });
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (reduceMotion) {
+          showLastFlipbookFrame(frames);
+          gsap.set(content, { autoAlpha: 1, y: 0 });
+          return;
+        }
 
         const timeline = gsap.timeline({
           scrollTrigger: {
@@ -107,7 +108,22 @@ export default function EventsWireframePage() {
           },
         });
 
-        appendFlipbookFrames(timeline, frames);
+        appendFlipbookFrames(timeline, frames, {
+          startAt: 0,
+          staggerDelay: 0.15,
+          frameDuration: 0.02,
+        });
+
+        timeline.to(
+          content,
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.42,
+            ease: "power2.out",
+          },
+          ">",
+        );
       });
     },
     { scope: rootRef },
@@ -132,17 +148,11 @@ export default function EventsWireframePage() {
          * 背景画像は CSS 側で画面幅いっぱいまで引き伸ばす。
          */}
         <section className="wf-event-board-section">
-          <Image
-            src={withBasePath("/images/block_large.PNG")}
-            alt=""
-            fill
-            quality={100}
-            unoptimized
-            sizes="100vw"
-            className="wf-event-board-bg"
-            aria-hidden
-          />
 
+          <div className="wf-event-board-bg-container" aria-hidden>
+            <div className="wf-event-board-bg-sticky" />
+          </div>
+          
           <h2 className="wf-event-board-title wf-maki-title">新歓イベント</h2>
 
           <div className="wf-event-grid">
