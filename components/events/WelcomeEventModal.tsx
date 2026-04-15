@@ -24,6 +24,13 @@ function getEventDetailLines(event: WelcomeEvent) {
   ].filter((line): line is string => Boolean(line));
 }
 
+function getEventMeetingLines(event: WelcomeEvent) {
+  return [
+    event.meetingId ? `ミーティングID：${event.meetingId}` : null,
+    event.passcode ? `パスコード：${event.passcode}` : null,
+  ].filter((line): line is string => Boolean(line));
+}
+
 function renderMobileParagraphs(paragraphs: string[][], keyPrefix: string) {
   return paragraphs.map((paragraph, paragraphIndex) => (
     <p
@@ -46,6 +53,7 @@ function renderEventBody(
   minChars = 5,
 ) {
   const detailLines = getEventDetailLines(event);
+  const meetingLines = getEventMeetingLines(event);
 
   if (!isMobileLayout) {
     return (
@@ -60,12 +68,22 @@ function renderEventBody(
           </div>
         ) : null}
         <p className="wf-events-modal-description">{event.description}</p>
+        {meetingLines.length > 0 ? (
+          <div className="wf-events-modal-meeting">
+            {meetingLines.map((line) => (
+              <p key={line} className="wf-events-modal-meeting-line">
+                {line}
+              </p>
+            ))}
+          </div>
+        ) : null}
       </div>
     );
   }
 
   const descriptionParagraphs = wrapTextForMobile(event.description, maxChars, minChars, true);
   const detailParagraphs = detailLines.map((line) => wrapTextForMobile(line, maxChars, minChars, true));
+  const meetingParagraphs = meetingLines.map((line) => wrapTextForMobile(line, maxChars, minChars, true));
 
   return (
     <div className="wf-events-modal-mobile-body">
@@ -77,6 +95,13 @@ function renderEventBody(
         </div>
       ) : null}
       {renderMobileParagraphs(descriptionParagraphs, `${event.id}-description`)}
+      {meetingParagraphs.length > 0 ? (
+        <div className="wf-events-modal-mobile-meeting">
+          {meetingParagraphs.flatMap((paragraphs, meetingIndex) =>
+            renderMobileParagraphs(paragraphs, `${event.id}-meeting-${meetingIndex}`),
+          )}
+        </div>
+      ) : null}
     </div>
   );
 }

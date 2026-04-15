@@ -484,6 +484,25 @@
   gap: 0.7em;
 }
 
+.wf-events-modal-meeting,
+.wf-events-modal-mobile-meeting {
+  display: flex;
+  flex-direction: column;
+  gap: 0.36em;
+}
+
+.wf-events-modal-meeting {
+  margin-top: 0.3em;
+}
+
+.wf-events-modal-mobile-meeting {
+  margin-top: 0.9em;
+}
+
+.wf-events-modal-meeting-line {
+  margin: 0;
+}
+
 .wf-events-modal-mobile-meta {
   margin-bottom: 1em;
   display: flex;

@@ -41,6 +41,8 @@ export type WelcomeEvent = {
   description: string;
   place?: string;
   time?: string;
+  meetingId?: string;
+  passcode?: string;
   shape?: "circle" | "capsule";
   position: {
     top: string;
@@ -143,6 +145,8 @@ const welcomeEventDefinitions = [
   { id: "ev28", date: "5/10", dates: eventDates("2026-05-10"), title: "入団説明会", description: "入団方法や入団後の流れなどをケッペキ団員が説明し、質疑応答を行います。", position: { top: "91%", left: "89.5%", width: "12.0%", height: "12.0%" } },
 ] as const satisfies readonly WelcomeEventInput[];
 
+type WelcomeEventId = (typeof welcomeEventDefinitions)[number]["id"];
+
 const welcomeEventDetailsById = {
   ev1: { place: "西部講堂/ルネ前集合", time: "13:55~" },
   ev2: { place: "東山青少年活動センター", time: "14:00~" },
@@ -157,13 +161,13 @@ const welcomeEventDetailsById = {
   ev11: { place: "カフェテリアルネ前", time: "18:00~" },
   ev12: { place: "鴨川", time: "10:00~18:00" },
   ev13: { place: "カフェテリアルネ前", time: "14:00~" },
-  ev14: { place: "未定", time: "18:00~" },
+  ev14: { place: "東山青少年活動センター", time: "18:00~" },
   ev15: { place: "東山青少年活動センター", time: "18:00~" },
   ev16: { place: "東山青少年活動センター", time: "18:00~" },
   ev17: { place: "カフェテリアルネ前", time: "18:00~" },
   ev18: { place: "東山青少年活動センター", time: "14:00~" },
   ev19: { place: "人間座", time: "10:00~" },
-  ev20: { place: "未定", time: "18:00~" },
+  ev20: { place: "東山青少年活動センター", time: "18:00~" },
   ev21: { place: "東山青少年活動センター", time: "18:00~" },
   ev22: { place: "THEATRE E9 KYOTO", time: "公演サイトをご覧ください" },
   ev23: { place: "オンライン", time: "未定" },
@@ -172,9 +176,16 @@ const welcomeEventDetailsById = {
   ev26: { place: "オンライン", time: "19:00~" },
   ev27: { place: "東山青少年活動センター", time: "14:00~" },
   ev28: { place: "オンライン", time: "19:00~" },
-} satisfies Record<(typeof welcomeEventDefinitions)[number]["id"], Pick<WelcomeEvent, "place" | "time">>;
+} satisfies Record<WelcomeEventId, Pick<WelcomeEvent, "place" | "time">>;
+
+const welcomeEventMeetingInfoById: Partial<Record<WelcomeEventId, Pick<WelcomeEvent, "meetingId" | "passcode">>> = {
+  ev24: { meetingId: "872 2006 6492", passcode: "b47uBm" },
+  ev26: { meetingId: "864 1379 5829", passcode: "1iuwqA" },
+  ev28: { meetingId: "893 0833 3212", passcode: "GB37c2" },
+};
 
 export const welcomeEvents: WelcomeEvent[] = welcomeEventDefinitions.map((event) => ({
   ...event,
   ...welcomeEventDetailsById[event.id],
+  ...(welcomeEventMeetingInfoById[event.id] ?? {}),
 }));
