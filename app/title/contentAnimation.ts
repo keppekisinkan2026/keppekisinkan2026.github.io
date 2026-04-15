@@ -29,6 +29,12 @@ type AboutFrameGroups = {
 };
 
 type AboutRowPlayer = (() => void) | null;
+type SnsBlockElements = {
+  section: HTMLElement;
+  frames: HTMLElement[];
+  title: HTMLElement | null;
+  icons: HTMLElement[];
+};
 
 const aboutFrameSelectors = {
   img1: ".js-about-img1-frame",
@@ -91,26 +97,35 @@ function showLastFrameGroups(frameGroups: HTMLElement[][]) {
   frameGroups.forEach((frames) => showLastFlipbookFrame(frames));
 }
 
+function collectSnsBlocks(root: HTMLElement): SnsBlockElements[] {
+  return gsap.utils.toArray<HTMLElement>(".js-title-sns-block", root).map((section) => ({
+    section,
+    frames: gsap.utils.toArray<HTMLElement>(".js-sns-frame", section),
+    title: section.querySelector<HTMLElement>(".js-sns-title"),
+    icons: gsap.utils.toArray<HTMLElement>(".js-sns-icon", section),
+  }));
+}
+
 function applyReducedMotionState(
-  snsFrames: HTMLElement[],
-  snsTitle: HTMLElement | null,
-  snsIcons: HTMLElement[],
+  snsBlocks: SnsBlockElements[],
   revealBlocks: HTMLElement[],
   aboutPanel: HTMLDivElement | null,
 ) {
-  if (snsFrames.length > 0) {
-    gsap.set(snsFrames, { autoAlpha: 0 });
-    gsap.set(snsFrames[snsFrames.length - 1], { autoAlpha: 1 });
-  }
+  snsBlocks.forEach(({ frames, title, icons }) => {
+    if (frames.length > 0) {
+      gsap.set(frames, { autoAlpha: 0 });
+      gsap.set(frames[frames.length - 1], { autoAlpha: 1 });
+    }
 
-  if (snsTitle) {
-    const finalSnsTitleY = getCssPixelValue(snsTitle, "--wf-sns-title-offset-y");
-    gsap.set(snsTitle, { autoAlpha: 1, y: finalSnsTitleY });
-  }
+    if (title) {
+      const finalSnsTitleY = getCssPixelValue(title, "--wf-sns-title-offset-y");
+      gsap.set(title, { autoAlpha: 1, y: finalSnsTitleY });
+    }
 
-  if (snsIcons.length > 0) {
-    gsap.set(snsIcons, { autoAlpha: 1, rotationX: 0, y: 0 });
-  }
+    if (icons.length > 0) {
+      gsap.set(icons, { autoAlpha: 1, rotationX: 0, y: 0 });
+    }
+  });
 
   revealBlocks.forEach((block) => {
     gsap.set(block, { clearProps: "all", autoAlpha: 1, y: 0 });
@@ -129,21 +144,18 @@ function applyReducedMotionState(
   showLastFrameGroups(Object.values(aboutFrameGroups));
 }
 
-function setupSnsAnimation(
-  snsSection: HTMLElement | null,
-  snsFrames: HTMLElement[],
-  snsTitle: HTMLElement | null,
-  snsIcons: HTMLElement[],
-) {
-  if (!snsSection || snsFrames.length === 0) {
+function setupSnsAnimation({ section, frames, title, icons }: SnsBlockElements) {
+  if (frames.length === 0) {
     return;
   }
 
-  const finalSnsTitleY = snsTitle ? getCssPixelValue(snsTitle, "--wf-sns-title-offset-y") : 0;
+  const finalSnsTitleY = title ? getCssPixelValue(title, "--wf-sns-title-offset-y") : 0;
 
-  hideFlipbookFrames(snsFrames);
-  gsap.set(snsTitle, { autoAlpha: 0, y: finalSnsTitleY + 10 });
-  gsap.set(snsIcons, {
+  hideFlipbookFrames(frames);
+  if (title) {
+    gsap.set(title, { autoAlpha: 0, y: finalSnsTitleY + 10 });
+  }
+  gsap.set(icons, {
     autoAlpha: 0,
     rotationX: -70,
     y: -10,
@@ -152,18 +164,18 @@ function setupSnsAnimation(
 
   const snsTimeline = gsap.timeline({
     scrollTrigger: {
-      trigger: snsSection,
+      trigger: section,
       start: "top 75%",
       invalidateOnRefresh: true,
       toggleActions: "play none none none",
     },
   });
 
-  appendFlipbookFrames(snsTimeline, snsFrames);
+  appendFlipbookFrames(snsTimeline, frames);
 
-  if (snsTitle) {
+  if (title) {
     snsTimeline.to(
-      snsTitle,
+      title,
       {
         autoAlpha: 1,
         y: finalSnsTitleY,
@@ -175,7 +187,7 @@ function setupSnsAnimation(
   }
 
   snsTimeline.to(
-    snsIcons,
+    icons,
     {
       autoAlpha: 1,
       rotationX: 0,
@@ -428,18 +440,16 @@ export function setupTitleContentAnimations({
   const isMobile = isMobileLayout ?? isTitleMobileLayout();
   const snsSection = root.querySelector<HTMLElement>("#sns");
   const hpSection = root.querySelector<HTMLElement>(".js-title-hp-stack");
-  const snsFrames = snsSection ? gsap.utils.toArray<HTMLElement>(".js-sns-frame", snsSection) : [];
-  const snsTitle = snsSection?.querySelector<HTMLElement>(".js-sns-title") ?? null;
-  const snsIcons = snsSection ? gsap.utils.toArray<HTMLElement>(".js-sns-icon", snsSection) : [];
+  const snsBlocks = snsSection ? collectSnsBlocks(snsSection) : [];
   const revealBlocks = gsap.utils.toArray<HTMLElement>(".js-title-reveal", root);
 
   if (reduceMotion) {
-    applyReducedMotionState(snsFrames, snsTitle, snsIcons, revealBlocks, aboutPanel);
+    applyReducedMotionState(snsBlocks, revealBlocks, aboutPanel);
     refreshScrollTriggers();
     return;
   }
 
-  setupSnsAnimation(snsSection, snsFrames, snsTitle, snsIcons);
+  snsBlocks.forEach((block) => setupSnsAnimation(block));
   setupHpPin(hpSection, aboutStage, aboutPanel, isMobile);
   setupRevealBlocks(revealBlocks, isMobile);
   setupAboutAnimation(aboutStage, aboutPanel, isMobile);

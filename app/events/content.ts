@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 export type WelcomeEventPhoneModalLayout = {
   paperTop?: string;
   paperRight?: string;
@@ -12,18 +10,27 @@ export type WelcomeEventPhoneModalLayout = {
   titleMarginTop?: string;
   titleMarginLeft?: string;
   titleMarginBottom?: string;
+  tabletTitleFontSize?: string;
   tabletTitleMarginTop?: string;
   tabletTitleMarginLeft?: string;
   tabletTitleMarginBottom?: string;
+  tabletTitleOffsetX?: string;
+  tabletTitleOffsetY?: string;
   textPadding?: string;
   textMarginTop?: string;
   textMarginLeft?: string;
   tabletTextMarginTop?: string;
   tabletTextMarginLeft?: string;
+  tabletTextOffsetX?: string;
+  tabletTextOffsetY?: string;
   textFontSize?: string;
   textLineHeight?: string;
   textMaxChars?: number;
   textMinChars?: number;
+  phoneTextMaxChars?: number;
+  phoneTextMinChars?: number;
+  tabletTextMaxChars?: number;
+  tabletTextMinChars?: number;
 };
 
 export type WelcomeEvent = {
@@ -31,7 +38,9 @@ export type WelcomeEvent = {
   date: string;
   dates: string[];
   title: string;
-  description: ReactNode;
+  description: string;
+  place?: string;
+  time?: string;
   shape?: "circle" | "capsule";
   position: {
     top: string;
@@ -40,6 +49,8 @@ export type WelcomeEvent = {
     height: string;
   };
 };
+
+type WelcomeEventInput = Omit<WelcomeEvent, "place" | "time"> & Partial<Pick<WelcomeEvent, "place" | "time">>;
 
 const defaultWelcomeEventPhoneModalLayout: WelcomeEventPhoneModalLayout = {
   paperTop: "41%",
@@ -53,18 +64,27 @@ const defaultWelcomeEventPhoneModalLayout: WelcomeEventPhoneModalLayout = {
   titleMarginTop: "0px",
   titleMarginLeft: "0px",
   titleMarginBottom: "0px",
+  tabletTitleFontSize: "40px",
   tabletTitleMarginTop: "0px",
   tabletTitleMarginLeft: "0px",
   tabletTitleMarginBottom: "0px",
+  tabletTitleOffsetX: "0px",
+  tabletTitleOffsetY: "-20px",
   textPadding: "2px 6px 2px 2px",
   textMarginTop: "0px",
   textMarginLeft: "0px",
-  tabletTextMarginTop: "0px",
+  tabletTextMarginTop: "30px",
   tabletTextMarginLeft: "0px",
+  tabletTextOffsetX: "0px",
+  tabletTextOffsetY: "-50px",
   textFontSize: "clamp(12px, calc(3.9 * var(--wf-reference-phone-vw)), 16px)",
   textLineHeight: "1.82",
   textMaxChars: 16,
   textMinChars: 5,
+  phoneTextMaxChars: 13,
+  phoneTextMinChars: 5,
+  tabletTextMaxChars: 16,
+  tabletTextMinChars: 5,
 };
 
 export const welcomeEventPhoneModalLayoutOverrides: Partial<Record<string, WelcomeEventPhoneModalLayout>> = {};
@@ -92,7 +112,7 @@ export const welcomeEventFrameSources = [
 
 const eventDates = (...dates: string[]) => dates;
 
-export const welcomeEvents: WelcomeEvent[] = [
+const welcomeEventDefinitions = [
   { id: "ev1", date: "3/28", dates: eventDates("2026-03-28"), title: "立て看イベント", description: "京都大学といえば立て看板！入試会場に貼られているモノが有名ですが、サークルごとの宣伝物として作ることもあります。そんな宣伝立て看板を一緒に作ってみよう！という企画です。板にガッツリペンキでイラストを描くというのはなかなか無い体験です。一回生に体験しておくべき新歓イベントとしては、演劇関係なくかなりおすすめです。", position: { top: "24.5%", left: "76.4%", width: "12.0%", height: "12.0%" } },
   { id: "ev2", date: "3/29", dates: eventDates("2026-03-29"), title: "役者体験会", description: "団員の指導のもと、短めの台本を用いて、読み合わせ、演出づけ、本番までを追体験できます。初めて演じてみるという方も、高校演劇に浸ってきたという子も、役に向かい合う一歩目として、是非皆さんに体験してほしいです！", position: { top: "23.3%", left: "89%", width: "12.0%", height: "12.0%" } },
   { id: "ev3", date: "4/2~4/3", dates: eventDates("2026-04-02", "2026-04-03"), title: "お花見", description: "紅萌祭の裏で河川敷にてお花見をします！演劇興味あるけどいきなり役者体験はちょっと....という方！まずは団員とゆる〜く桜を愛でましょう。", shape: "capsule", position: { top: "35.6%", left: "56%", width: "26%", height: "8%" } },
@@ -121,4 +141,40 @@ export const welcomeEvents: WelcomeEvent[] = [
   { id: "ev26", date: "4/30", dates: eventDates("2026-04-30"), title: "入団説明会", description: "入団方法や入団後の流れなどをケッペキ団員が説明し、質疑応答を行います。", position: { top: "81%", left: "51%", width: "12.0%", height: "12.0%" } },
   { id: "ev27", date: "5/9", dates: eventDates("2026-05-09"), title: "役者体験会", description: "団員の指導のもと、短めの台本を用いて、読み合わせ、演出づけ、本番までを追体験できます。初めて演じてみるという方も、高校演劇に浸ってきたという子も、役に向かい合う一歩目として、是非皆さんに体験してほしいです！", position: { top: "92%", left: "75.5%", width: "12.0%", height: "12.0%" } },
   { id: "ev28", date: "5/10", dates: eventDates("2026-05-10"), title: "入団説明会", description: "入団方法や入団後の流れなどをケッペキ団員が説明し、質疑応答を行います。", position: { top: "91%", left: "89.5%", width: "12.0%", height: "12.0%" } },
-];
+] as const satisfies readonly WelcomeEventInput[];
+
+const welcomeEventDetailsById = {
+  ev1: { place: "西部講堂/ルネ前集合", time: "13:55~" },
+  ev2: { place: "東山青少年活動センター", time: "14:00~18:00" },
+  ev3: { place: "鴨川", time: "11:00~18:00" },
+  ev4: { place: "鴨川", time: "11:00~18:00" },
+  ev5: { place: "西部講堂", time: "10:00~18:00" },
+  ev6: { place: "東山青少年活動センター", time: "10:00~" },
+  ev7: { place: "東山青少年活動センター", time: "14:00~18:00" },
+  ev8: { place: "京阪七条駅1番出口", time: "10:00~" },
+  ev9: { place: "カフェテリアルネ前", time: "14:00~" },
+  ev10: { place: "カフェテリアルネ前", time: "18:00~" },
+  ev11: { place: "カフェテリアルネ前", time: "18:00~" },
+  ev12: { place: "鴨川", time: "10:00~18:00" },
+  ev13: { place: "カフェテリアルネ前", time: "14:00~" },
+  ev14: { place: "未定", time: "18:00~" },
+  ev15: { place: "東山青少年活動センター", time: "18:00~" },
+  ev16: { place: "東山青少年活動センター", time: "18:00~" },
+  ev17: { place: "未定", time: "18:00~" },
+  ev18: { place: "東山青少年活動センター", time: "14:00~" },
+  ev19: { place: "人間座", time: "10:00~" },
+  ev20: { place: "未定", time: "18:00~" },
+  ev21: { place: "東山青少年活動センター", time: "18:00~" },
+  ev22: { place: "THEATRE E9 KYOTO", time: "公演サイトをご覧ください" },
+  ev23: { place: "オンライン", time: "未定" },
+  ev24: { place: "オンライン", time: "19:00~" },
+  ev25: { place: "カフェテリアルネ前", time: "14:00~" },
+  ev26: { place: "オンライン", time: "19:00~" },
+  ev27: { place: "東山青少年活動センター", time: "14:00~" },
+  ev28: { place: "オンライン", time: "19:00~" },
+} satisfies Record<(typeof welcomeEventDefinitions)[number]["id"], Pick<WelcomeEvent, "place" | "time">>;
+
+export const welcomeEvents: WelcomeEvent[] = welcomeEventDefinitions.map((event) => ({
+  ...event,
+  ...welcomeEventDetailsById[event.id],
+}));

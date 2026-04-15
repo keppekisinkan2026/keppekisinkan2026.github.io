@@ -46,6 +46,36 @@ export function EventsWireframePageClient() {
       mobileMaxWidth={MAINTENANCE_MOBILE_MAX_WIDTH}
     >
       <div className="wf-event-page-container">
+        <div className="wf-event-booking-shell">
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSehMl9s9AeTiCgiPfmov2uHLuXhcZ9QFmLl5f0dtmgQT_BwwQ/viewform"
+            className="wf-event-booking-link"
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="新歓公演予約フォームを開く"
+          >
+            <Image
+              src={withBasePath("/images/umi100_g.PNG")}
+              alt=""
+              fill
+              unoptimized
+              sizes="(max-width: 640px) 100vw, (max-width: 900px) 96vw, 1080px"
+              className="wf-event-booking-image wf-event-booking-image--default"
+            />
+            <Image
+              src={withBasePath("/images/event.PNG")}
+              alt=""
+              fill
+              unoptimized
+              sizes="(max-width: 640px) 100vw, (max-width: 900px) 96vw, 1080px"
+              className="wf-event-booking-image wf-event-booking-image--active"
+            />
+            <span className="wf-event-booking-title wf-maki-title wf-title-hp-text">
+              <span className="wf-title-hp-line">予約はこちら</span>
+            </span>
+          </a>
+        </div>
+
         <div className="wf-event-map-shell">
           <Image
             src={withBasePath(EVENT_CALENDAR_IMAGE.src)}

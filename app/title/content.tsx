@@ -10,6 +10,13 @@ export const openingFrameSources = [
 ] as const;
 
 export const snsFrameSources = ["/images/sns1.PNG", "/images/sns2.PNG", "/images/sns3.PNG", "/images/sns4.png"] as const;
+export const specialSnsFrameSources = [
+  "/images/sns1.PNG",
+  "/images/sns2.PNG",
+  "/images/sns3.PNG",
+  "/images/sns4.png",
+  "/images/sns5.PNG",
+] as const;
 
 export const aboutImg1FrameSources = ["/images/i1_1.PNG", "/images/i1_2.PNG", "/images/i1_3.PNG", "/images/i1.PNG"] as const;
 export const aboutCommonAnimFrameSources = [
@@ -117,7 +124,22 @@ export const aboutHistoryParagraphs: readonly ReactNode[] = [
 ];
 
 const snsBlockOrder = ["hp", "x", "instagram", "note", "youtube"] as const;
+const specialSnsBlockOrder = ["x", "instagram", "note"] as const;
 
 export const snsBlockLinks = snsBlockOrder
   .map((id) => socialLinks.find((item) => item.id === id))
   .filter((item): item is (typeof socialLinks)[number] => Boolean(item));
+
+const specialSnsBlockHrefMap = {
+  x: "https://x.com/keppeki_2026",
+  instagram: "https://www.instagram.com/g.keppeki.2026shinkan",
+  note: "https://note.com/keppeki_shinkan",
+} as const;
+
+export const specialSnsBlockLinks = specialSnsBlockOrder
+  .map((id) => socialLinks.find((item) => item.id === id))
+  .filter((item): item is (typeof socialLinks)[number] => Boolean(item))
+  .map((item) => ({
+    ...item,
+    href: specialSnsBlockHrefMap[item.id as keyof typeof specialSnsBlockHrefMap] ?? item.href,
+  }));

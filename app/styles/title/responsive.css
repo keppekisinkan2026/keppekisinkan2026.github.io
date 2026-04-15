@@ -64,6 +64,29 @@
     --wf-title-tablet-join-qr-offset-y: -96px;
   }
 
+  .wf-title-sns-panel-shell--special {
+    --wf-title-special-sns-content-gap: 20px;
+    --wf-title-special-sns-content-padding: 50px 30px 30px;
+    --wf-title-special-sns-content-offset-y: -30px;
+    --wf-title-special-sns-title-size: clamp(25px, 9vw, 40px);
+    --wf-title-special-sns-list-width: min(100%, 400px);
+    --wf-title-special-sns-list-max-width: 100%;
+    --wf-title-special-sns-list-gap: 20px;
+    --wf-title-special-sns-list-offset-x: 0px;
+    --wf-title-special-sns-list-offset-y: 0px;
+    --wf-title-special-sns-bubble-width: var(--wf-title-tablet-sns-bubble-width, 58px);
+    --wf-title-special-sns-item-1-x: -60px;
+    --wf-title-special-sns-item-1-y: -25px;
+    --wf-title-special-sns-item-1-rotate: -4deg;
+    --wf-title-special-sns-item-2-x: 0px;
+    --wf-title-special-sns-item-2-y: -25px;
+    --wf-title-special-sns-item-2-rotate: 3deg;
+    --wf-title-special-sns-item-3-x: 60px;
+    --wf-title-special-sns-item-3-y: -25px;
+    --wf-title-special-sns-item-3-rotate: -2deg;
+  }
+  
+
   .wf-title-opening-stack {
     gap: var(--wf-title-tablet-opening-stack-gap);
     padding-left: var(--wf-title-tablet-opening-stack-padding-left);
@@ -197,6 +220,10 @@
     margin-top: var(--wf-title-tablet-sns-stage-margin-top, -52px);
   }
 
+  .wf-title-sns-stack {
+    gap: 26px;
+  }
+
   .wf-title-sns-list {
     justify-content: space-between;
     gap: var(--wf-title-tablet-sns-list-gap, 10px);
@@ -261,6 +288,47 @@
   .wf-title-social-icon--note {
     width: var(--wf-title-tablet-sns-note-icon-size, clamp(28px, 2.8vw, 40px));
     height: var(--wf-title-tablet-sns-note-icon-size, clamp(28px, 2.8vw, 40px));
+  }
+
+  .wf-title-sns-content--special {
+    gap: var(--wf-title-special-sns-content-gap);
+    padding: var(--wf-title-special-sns-content-padding);
+    transform: translateY(var(--wf-title-special-sns-content-offset-y));
+  }
+
+  .wf-title-sns-list--special {
+    justify-content: center;
+    gap: var(--wf-title-special-sns-list-gap);
+    width: var(--wf-title-special-sns-list-width);
+    max-width: var(--wf-title-special-sns-list-max-width);
+    transform: translate(var(--wf-title-special-sns-list-offset-x), var(--wf-title-special-sns-list-offset-y));
+  }
+
+  .wf-title-sns-list--special li:nth-child(1) {
+    transform: translate(var(--wf-title-special-sns-item-1-x), var(--wf-title-special-sns-item-1-y))
+      rotate(var(--wf-title-special-sns-item-1-rotate));
+  }
+
+  .wf-title-sns-list--special li:nth-child(2) {
+    transform: translate(var(--wf-title-special-sns-item-2-x), var(--wf-title-special-sns-item-2-y))
+      rotate(var(--wf-title-special-sns-item-2-rotate));
+  }
+
+  .wf-title-sns-list--special li:nth-child(3) {
+    transform: translate(var(--wf-title-special-sns-item-3-x), var(--wf-title-special-sns-item-3-y))
+      rotate(var(--wf-title-special-sns-item-3-rotate));
+  }
+
+  .wf-title-sns-bubble--special {
+    width: var(--wf-title-special-sns-bubble-width);
+  }
+
+
+
+  .wf-title-sns-section .wf-title-sns-content--special .wf-title-section-title {
+    --wf-sns-title-offset-y: 0px;
+    font-size: var(--wf-title-special-sns-title-size);
+    line-height: 1.25;
   }
 
   .wf-title-sns-section .wf-title-section-title {
@@ -620,5 +688,34 @@
 
   .wf-join-message-line + .wf-join-message-line {
     margin-top: 0.06em;
+  }
+}
+
+@media (max-width: 640px) {
+  .wf-title-sns-panel-shell--special {
+    --wf-title-special-sns-content-gap: 20px;
+    --wf-title-special-sns-content-padding: 50px 30px 30px;
+    --wf-title-special-sns-content-offset-y: -3px;
+    --wf-title-special-sns-title-size: clamp(25px, 4.7vw, 20px);
+    --wf-title-special-sns-list-width: min(100%, 400px);
+    --wf-title-special-sns-list-max-width: 100%;
+    --wf-title-special-sns-list-gap: 20px;
+    --wf-title-special-sns-list-offset-x: 0px;
+    --wf-title-special-sns-list-offset-y: 0px;
+    --wf-title-special-sns-bubble-width: var(--wf-title-tablet-sns-bubble-width, 58px);
+    --wf-title-special-sns-item-1-x: -40px;
+    --wf-title-special-sns-item-1-y: -25px;
+    --wf-title-special-sns-item-1-rotate: -4deg;
+    --wf-title-special-sns-item-2-x: 0px;
+    --wf-title-special-sns-item-2-y: -30px;
+    --wf-title-special-sns-item-2-rotate: 3deg;
+    --wf-title-special-sns-item-3-x: 40px;
+    --wf-title-special-sns-item-3-y: -35px;
+    --wf-title-special-sns-item-3-rotate: -2deg;
+  }
+
+  .wf-title-sns-section .wf-title-sns-content--special .wf-title-section-title {
+    white-space: nowrap;
+    line-height: 1;
   }
 }

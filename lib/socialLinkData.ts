@@ -37,7 +37,7 @@ export const socialLinks: SocialLink[] = [
   {
     id: "note",
     label: "note",
-    href: "https://note.com/keppeki_shinkan",
+    href: "https://note.com/gekidan_keppeki",
     iconPath: "/images/note-icon.svg",
     external: true,
   },
