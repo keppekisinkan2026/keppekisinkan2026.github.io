@@ -145,12 +145,12 @@ const welcomeEventDefinitions = [
 
 const welcomeEventDetailsById = {
   ev1: { place: "西部講堂/ルネ前集合", time: "13:55~" },
-  ev2: { place: "東山青少年活動センター", time: "14:00~18:00" },
-  ev3: { place: "鴨川", time: "11:00~18:00" },
-  ev4: { place: "鴨川", time: "11:00~18:00" },
-  ev5: { place: "西部講堂", time: "10:00~18:00" },
+  ev2: { place: "東山青少年活動センター", time: "14:00~" },
+  ev3: { place: "鴨川", time: "11:00~" },
+  ev4: { place: "鴨川", time: "11:00~" },
+  ev5: { place: "西部講堂", time: "10:00~" },
   ev6: { place: "東山青少年活動センター", time: "10:00~" },
-  ev7: { place: "東山青少年活動センター", time: "14:00~18:00" },
+  ev7: { place: "東山青少年活動センター", time: "14:00~" },
   ev8: { place: "京阪七条駅1番出口", time: "10:00~" },
   ev9: { place: "カフェテリアルネ前", time: "14:00~" },
   ev10: { place: "カフェテリアルネ前", time: "18:00~" },
