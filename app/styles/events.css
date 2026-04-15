@@ -37,7 +37,7 @@
   transform: translate(var(--wf-event-booking-offset-x), var(--wf-event-booking-offset-y));
 }
 
-.wf-event-booking-title {
+.wf-event-booking-title.wf-title-hp-text {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -611,7 +611,7 @@
     opacity: 1;
   }
 
-  .wf-event-booking-title {
+  .wf-event-booking-title.wf-title-hp-text {
     padding: clamp(12px, calc(3.2 * var(--wf-reference-phone-vw)), 20px);
   }
 
