@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/seo";
+import { normalizeSitePath, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
@@ -20,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   return sitemapPaths.map(({ path, priority, changeFrequency }) => ({
-    url: `${SITE_URL}${path}`,
+    url: `${SITE_URL}${normalizeSitePath(path)}`,
     lastModified,
     changeFrequency,
     priority,

@@ -16,6 +16,15 @@ function buildSeoTitle(title: string) {
   return `${title} | ${SITE_NAME}`;
 }
 
+export function normalizeSitePath(path: string) {
+  if (!path || path === "/") {
+    return "/";
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return normalizedPath.endsWith("/") ? normalizedPath : `${normalizedPath}/`;
+}
+
 type PageMetadataOptions = {
   title: string;
   description: string;
@@ -24,17 +33,18 @@ type PageMetadataOptions = {
 
 export function createPageMetadata({ title, description, path }: PageMetadataOptions): Metadata {
   const seoTitle = buildSeoTitle(title);
+  const canonicalPath = normalizeSitePath(path);
 
   return {
     title,
     description,
     alternates: {
-      canonical: path,
+      canonical: canonicalPath,
     },
     openGraph: {
       type: "website",
       locale: "ja_JP",
-      url: path,
+      url: canonicalPath,
       siteName: SITE_NAME,
       title: seoTitle,
       description,
@@ -54,7 +64,7 @@ export function createDefaultOpenGraph() {
     type: "website" as const,
     locale: "ja_JP",
     siteName: SITE_NAME,
-    url: "/title",
+    url: normalizeSitePath("/title"),
     title: buildSeoTitle("2026年度新歓特設サイト"),
     description: DEFAULT_SITE_DESCRIPTION,
     images: [SEO_IMAGE],
