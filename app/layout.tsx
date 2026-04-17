@@ -27,12 +27,9 @@ export const metadata: Metadata = {
     google: "pNbcPoCmvDi7DzCyCnUANAjbCBhTIEymct2vvu6EYPg",
   },
   icons: {
-    icon: [
-      { url: "/icon.png", type: "image/png", sizes: "400x400" },
-      { url: "/favicon.ico", sizes: "any" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-icon.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
   description: DEFAULT_SITE_DESCRIPTION,
   openGraph: createDefaultOpenGraph(),
