@@ -11,7 +11,7 @@ export function TitleHpSection() {
       >
         <span className="wf-title-hp-button-stage" aria-hidden>
           <Image
-            src={withBasePath("/images/umi100_g.PNG")}
+            src={withBasePath("/images/umi100_title_g.PNG")}
             alt=""
             fill
             quality={100}
@@ -20,7 +20,7 @@ export function TitleHpSection() {
             className="wf-title-hp-image wf-title-hp-image--base"
           />
           <Image
-            src={withBasePath("/images/umi100.PNG")}
+            src={withBasePath("/images/umi100_title.PNG")}
             alt=""
             fill
             quality={100}
