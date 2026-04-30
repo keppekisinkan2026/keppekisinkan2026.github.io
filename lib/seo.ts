@@ -64,7 +64,7 @@ export function createDefaultOpenGraph() {
     type: "website" as const,
     locale: "ja_JP",
     siteName: SITE_NAME,
-    url: normalizeSitePath("/title"),
+    url: normalizeSitePath("/"),
     title: buildSeoTitle("2026年度新歓特設サイト"),
     description: DEFAULT_SITE_DESCRIPTION,
     images: [SEO_IMAGE],

@@ -23,9 +23,10 @@ export function Header() {
         <nav aria-label="グローバルナビゲーション">
           <ul className="wf-global-nav-list">
             {headerLinks.map((item) => {
+              const itemPath = item.href.split("#")[0] || "/";
               const isCurrent =
-                normalizedPathname === item.href ||
-                (item.href === "/title#about" && normalizedPathname === "/title");
+                normalizedPathname === itemPath ||
+                (item.href === "/#about" && normalizedPathname === "/");
 
               return (
                 <li key={item.href} className={`wf-global-nav-item wf-global-nav-item--${item.id}`}>

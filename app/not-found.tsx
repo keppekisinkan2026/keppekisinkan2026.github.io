@@ -24,7 +24,7 @@ export default function NotFound() {
           URL が変わったか、ページが移動した可能性があります。
         </p>
         <Link
-          href="/title"
+          href="/"
           className="wf-maki-title inline-flex items-center justify-center rounded-full bg-[#96c44b] px-6 py-3 text-[18px] leading-none text-[#f9fcf6] no-underline shadow-[0_6px_18px_rgba(49,66,35,0.16)] transition-opacity hover:opacity-80"
         >
           タイトルへ戻る
